@@ -1,0 +1,9 @@
+input_parameters:
+  target: "Fatalities"
+  n_days: 30
+  target_deaths: "Rate_over_population"
+  model_to_apply: "kernel_ridge"
+  country_to_test: "Brazil"
+  day_to_roll: 100
+  start_row: 60
+  noise: 0.00
