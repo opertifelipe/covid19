@@ -73,14 +73,13 @@ countries_dict = {"Italy": {
 
 st.title("COVID19: Brazilian's pandemic peak forecasting")
 
-@st.cache
+#@st.cache
 def load_data(data_file):
     data = pd.read_csv(data_file)
     return data
 data =  load_data("../data/train.csv")
 data['Date'] = pd.to_datetime(data['Date'], format='%Y-%m-%d')
 data = data[(data["County"].isnull()) & (data["Province_State"].isnull())]
-st.write(data.head())
 
 df_countries = create_dataframe_country_target(data, "Brazil", "Fatalities",countries_dict).reset_index()
 for country in list(countries_dict.keys()):
@@ -88,19 +87,58 @@ for country in list(countries_dict.keys()):
         df_country = create_dataframe_country_target(data, country, "Fatalities",countries_dict).reset_index()
         df_countries = df_countries.append(df_country)
 df_countries = df_countries.set_index("Country_Region")
-st.write(df_countries.head())
+
+"""
+## Plot deaths for each country
+"""
 
 countries = st.multiselect("Choose countries", list(df_countries.index), ["Italy","Brazil","US"])
-
 data_deaths = df_countries.loc[countries]
 data_deaths["Country"] = list(data_deaths.index)
-chart = (
+st.write(data_deaths[data_deaths["Country"] == "US"].head())
+
+countries_death = (
     alt.Chart(data_deaths)
-    .mark_area(opacity=0.5)
+    .mark_line(opacity=0.5)
         .encode(
         x="Date:T",
         y="Rate_over_population:Q",
         color="Country:N"
     )
 )
-st.altair_chart(chart, use_container_width=True)
+st.altair_chart(countries_death, use_container_width=True)
+
+data_model = pd.read_csv("tables/prediction_several_days_roll_model_kernel_ridge_target_Fatalities_n_days_30_target_deaths_Rate_over_population.csv")
+data_comparison = data_model.copy()
+
+data_target = data_model[["Date","Target_real"]]
+data_target.columns = ["Date","Deaths"]
+data_target["Status"] = "Real"
+data_predicted = data_model[["Date","Target_predicted"]]
+data_predicted.columns = ["Date","Deaths"]
+data_predicted["Status"] = "Predicted"
+
+data_model = data_target.append(data_predicted)
+data_model.index = data_model["Status"]
+
+
+status = st.multiselect("Choose between real and predicted", list(data_model.index), ["Real","Predicted"])
+data_forecast = data_model.loc[status]
+
+
+
+prediction = (
+    alt.Chart(data_model)
+    .mark_line()
+        .encode(
+        x="Date:T",
+        y="Deaths:Q",
+        color="Status:N"
+    )
+)
+st.altair_chart(prediction, use_container_width=True)
+
+peak_day = data_comparison.iloc[data_comparison["Target_predicted"].argmax()]["Date"]
+"""
+Peak max in Brazil will be the: **"""+peak_day+"""**
+"""
