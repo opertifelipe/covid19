@@ -8,6 +8,9 @@ from joblib import dump, load
 from sklearn.metrics import mean_squared_error
 from math import sqrt
 import json
+import yaml
+import sys
+
 
 
 countries_dict = {"Italy": {
@@ -77,14 +80,20 @@ countries_dict = {"Italy": {
 
 def main():
     # Parameters
-    target = "Fatalities"
-    n_days = 30
-    target_deaths = "Rate_over_population"
-    model_to_apply = "kernel_ridge"
-    country_to_test = "Brazil"
-    day_to_roll = 100
-    start_row = 60
-    noise = 0.00
+    with open(sys.argv[1]) as file:
+        # The FullLoader parameter handles the conversion from YAML
+        # scalar values to Python the dictionary format
+        input_parameters = yaml.load(file, Loader=yaml.FullLoader)
+
+    target = input_parameters["input_parameters"]["target"]
+    n_days = input_parameters["input_parameters"]["n_days"]
+    target_deaths = input_parameters["input_parameters"]["target_deaths"]
+    model_to_apply = input_parameters["input_parameters"]["model_to_apply"]
+    country_to_test = input_parameters["input_parameters"]["country_to_test"]
+    day_to_roll = input_parameters["input_parameters"]["day_to_roll"]
+    start_row = input_parameters["input_parameters"]["start_row"]
+    noise = input_parameters["input_parameters"]["noise"]
+
 
     # Read data
     data = pd.read_csv("../data/train.csv")
@@ -136,7 +145,7 @@ def main():
                 "RMSE": rmse,
                 "peak_day" : peak_day}
     with open("report/report_several_days_roll_model_"+model_to_apply+"_target_"+target+"_n_days_"+str(n_days)+"_target_deaths_"+target_deaths+".json", 'w') as fp:
-        json.dump(data, fp)
+        json.dump(report, fp)
 
 if __name__ == "__main__":
     main()
