@@ -95,7 +95,7 @@ df_countries = df_countries.set_index("Country_Region")
 countries = st.multiselect("Choose countries", list(df_countries.index), ["Italy","Brazil","US"])
 data_deaths = df_countries.loc[countries]
 data_deaths["Country"] = list(data_deaths.index)
-st.write(data_deaths[data_deaths["Country"] == "US"].head())
+#st.write(data_deaths[data_deaths["Country"] == "US"].head())
 
 countries_death = (
     alt.Chart(data_deaths)
