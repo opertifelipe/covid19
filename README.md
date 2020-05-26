@@ -24,8 +24,13 @@ Furthermore, it trains a KernelRidge regression to predict the Brazilian's pande
 
 ### App
 The app folder contains the programs to train and test the model given a list of parameteres.
-The parameters are located in the yaml file (exp: params_1.yml). 
+The parameters are located in the yaml file (exp: params_1.yml). To run the model given the 
+parameters params_1.yml you should run:
 
+    python main.py params_1.yml 
+Furthermore, it available a web app developed with streamlit (https://www.streamlit.io/).
+The web app shows a simple visualization of my results. To shows the web app you should run:
 
- 
+    streamlit run run.py
+
 
