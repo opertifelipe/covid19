@@ -6,6 +6,10 @@ and their relation with the population.
 Furthermore, it shows a forecasting model to predict the Brazilian's pandemic peak. Preliminary,
 results estimate the pandemic peak for the 11th of June 2020.
 
+The purposes of this project are two. From one side, I would like to share with the community my personal 
+forecasting of the Brazilian's pandemic peak. And from the other side, I would like to share the structure
+of this project for next more accurate forecasting and visualization.
+ 
 ## Structure of the project
 The projects contains three folders:
 - data: where are located all the data used in the project;
@@ -32,5 +36,17 @@ Furthermore, it available a web app developed with streamlit (https://www.stream
 The web app shows a simple visualization of my results. To shows the web app you should run:
 
     streamlit run run.py
+The app folder contains:
+- main.py: main program to train and test the model;
+- params_1.yml: parameters used to train and test the model;
+- learning_covid: package with functions related to preprocessing and modelling. 
+Currently are available the RandomForestRegression, Ridge regression, Lasso regression,
+ and kernel Ridge regression (several not-linear functions);
+- models: joblib file with the Pipeline models;
+- tables: several table saved during the training and the test;
+- report: final results;
+- run.py: web app with my personal results.
+
+
 
 
