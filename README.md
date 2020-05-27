@@ -9,6 +9,9 @@ results estimate the pandemic peak for the 11th of June 2020.
 The purposes of this project are two. From one side, I would like to share with the community my personal 
 forecasting of the Brazilian's pandemic peak. And from the other side, I would like to share the structure
 of this project for next more accurate forecasting and visualization.
+
+This project is also published in a Medium blog post:
+https://medium.com/@operti.felipe/covid19-brazilians-pandemic-peak-forecasting-885373cf22d6
  
 ## Structure of the project
 The projects contains three folders:
